@@ -18,12 +18,15 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody RB;
 
+
+    int counterforPickUps;
    
     private void Start()
     {
         RB = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         accessories = GetComponent<PlayerAccessories>();
+        counterforPickUps = 0;
     }
     public void SetMoveSpeed(float newMoveSpeed) => moveSpeed = newMoveSpeed;
 
@@ -64,13 +67,39 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    void SetAnimations(int counter)
+    {
+ 
+
+        if(counter>=2 && counter <4)
+        {
+            animator.SetTrigger("Walk_Normal");
+        }
+        else if(counter>=4 && counter <10)
+        {
+            animator.SetTrigger("Walk_Happy");
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("HeadSet_Gate"))
         {
-            other.gameObject.transform.DOScale(Vector2.zero, 0.15f);
-            animator.SetTrigger("Walk_Normal");
-            accessories.EnableHeadset();
+            if(other.gameObject.GetComponent<Gate>().isActive)
+            {
+                CashPickUp.instance.DecrementCash(other.gameObject.GetComponent<Gate>().getPrice());
+                other.gameObject.transform.DOScale(Vector2.zero, 0.15f);
+              
+                accessories.EnableHeadset();
+                accessories.PickUpItemByFollowers(other.transform.GetChild(0).transform);
+                counterforPickUps++;
+                SetAnimations(counterforPickUps);
+            }
+            else
+            {
+                Debug.Log("Ghareeed Admi");
+            }
+           
         }
     }
 
