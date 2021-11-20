@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
+using Cinemachine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Variables")]
@@ -20,14 +20,25 @@ public class PlayerController : MonoBehaviour
 
 
     int counterforPickUps;
-   
+
+  
+    [SerializeField]
+    CinemachineVirtualCameraBase EndCam;
+
     private void Start()
     {
         RB = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         accessories = GetComponent<PlayerAccessories>();
         counterforPickUps = 0;
+        GameManager.instance.onGameStarted += StarttheGame;
     }
+
+    private void StarttheGame()
+    {
+        animator.SetTrigger("Play");
+    }
+
     public void SetMoveSpeed(float newMoveSpeed) => moveSpeed = newMoveSpeed;
 
     public float GetMoveSpeed()
@@ -38,6 +49,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //for moving straight
+        if (!GameManager.instance.hasStarted) return;
         transform.Translate(Vector3.forward * (moveSpeed * Time.deltaTime));
         transform.DORotateQuaternion(Quaternion.Euler(0f, yRot, 0f), 0.15f);
         if (Input.GetMouseButtonDown(0))
@@ -74,6 +86,7 @@ public class PlayerController : MonoBehaviour
         if(counter>=2 && counter <4)
         {
             animator.SetTrigger("Walk_Normal");
+            animator.SetTrigger("Happy");
         }
         else if(counter>=4 && counter <10)
         {
@@ -97,9 +110,17 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                
                 Debug.Log("Ghareeed Admi");
             }
            
+        }
+        if(other.gameObject.CompareTag("EndLine"))
+        {
+            animator.SetTrigger("Idle");
+            moveSpeed = 0f;
+            EndCam.m_Priority = 12;
+            accessories.RearrangeItems();
         }
     }
 

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HeadSet_Gate
   - Cash
+  - EndLine
   layers:
   - Default
   - TransparentFX
