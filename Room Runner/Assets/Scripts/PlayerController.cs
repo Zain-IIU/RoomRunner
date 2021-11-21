@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
 
   
     [SerializeField]
-    CinemachineVirtualCameraBase EndCam;
+    CinemachineVirtualCamera EndCam;
 
     private void Start()
     {
@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Idle");
             moveSpeed = 0f;
             EndCam.m_Priority = 12;
-            accessories.RearrangeItems();
+            accessories.RearrangeItems(EndCam);
         }
     }
 
