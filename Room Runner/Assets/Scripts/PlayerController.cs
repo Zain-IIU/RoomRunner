@@ -122,6 +122,8 @@ public class PlayerController : MonoBehaviour
             EndCam.m_Priority = 12;
             accessories.RearrangeItems(EndCam);
         }
+
+       
     }
 
 }

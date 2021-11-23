@@ -15,6 +15,10 @@ public class CashPickUp : MonoBehaviour
     GameObject pickUPVFX;
     [SerializeField]
     int incremnetinCash;
+    [SerializeField]
+    Animator animator;
+    [SerializeField]
+    GameObject VFX;
     int curCash;
 
     private void Awake()
@@ -24,6 +28,7 @@ public class CashPickUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         curCash = 0;
     }
 
@@ -32,6 +37,7 @@ public class CashPickUp : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Cash"))
         {
+            UIManager.instance.coinPickUpEffect(incremnetinCash);
             cashText.transform.DOScale(Vector3.one * 1.25f, 0.25f).SetEase(Ease.InOutSine).OnComplete(()=>
             {
                 cashText.transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.InOutSine);
@@ -43,11 +49,18 @@ public class CashPickUp : MonoBehaviour
             pickUPVFX.SetActive(true);
             GatesManager.instance.ChangeGateApperance();
         }
+        if(other.gameObject.CompareTag("Obstacle"))
+        {
+            DecrementCash(50);
+            animator.SetTrigger("Walk_Sad");
+            VFX.SetActive(true);
+        }
 
     }
 
     public void DecrementCash(int amount)
     {
+        UIManager.instance.DecrementCashEffect(amount);
         curCash -= amount;
         cashText.text = curCash.ToString();
         cashText.transform.DOScale(Vector3.one * 1.25f, 0.25f).SetEase(Ease.InOutSine).OnComplete(() =>
