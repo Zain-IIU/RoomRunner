@@ -68,6 +68,9 @@ public class PlayerAccessories : MonoBehaviour
                 {
                     endCamera.transform.DOMoveZ(148f, 1f);
                     MiniGame.instance.StartScreen();
+                    UIManager.instance.ShowAvatar();
+                    MiniGame.instance.StartMiniGameTimer();
+                    UIManager.instance.TweenAvatarandMultiplierEffect();
                 });
             }
         }

@@ -24,6 +24,8 @@ public class MiniGame : MonoBehaviour
     [SerializeField]
     CinemachineVirtualCamera winCamera;
 
+
+    bool hasLost;
     private void Awake()
     {
         instance = this;
@@ -35,18 +37,30 @@ public class MiniGame : MonoBehaviour
         screenOfMonitor.DOScale(Vector2.one* 0.02f, 0.5f);
     }
 
-    public void PlayTheGame()
+    private void Update()
     {
-        
-        healthBar.fillAmount -= 0.25f;
-        if(healthBar.fillAmount==0)
+        if (healthBar.fillAmount <= 0 && !hasLost)
         {
+            hasLost = true;
             dotInScreen.DOScale(Vector2.zero, 0.15f);
             winCamera.m_Priority = 15;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetTrigger("Win");
+            UIManager.instance.ResetAvatarPos();
+          //  GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetTrigger("Win");
         }
-        else
-        {
+    }
+
+
+    public void StartMiniGameTimer()
+    {
+        healthBar.DOFillAmount(0, 2f);
+    }
+    public void PlayTheGame()
+    {
+        DOTween.KillAll();
+        healthBar.fillAmount = 1f;
+        StartMiniGameTimer();
+        UIManager.instance.CashMultiplier();
+
             dotInScreen.DOScale(Vector2.zero, 0.15f).OnComplete(() =>
             {
                 dotInScreen.DOAnchorPos(new Vector3(Random.Range(-23f, 23f), Random.Range(-6f, 6f), 0.25f), 0.25f).OnComplete(() =>
@@ -54,9 +68,6 @@ public class MiniGame : MonoBehaviour
                     dotInScreen.DOScale(Vector2.one, 0.15f);
                 });
             });
-        }
-       
-
-
+        
     }
 }

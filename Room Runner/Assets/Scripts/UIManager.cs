@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     [SerializeField]
-    RectTransform InGamePanel;
+    RectTransform TwitchFollowersPanel;
     [SerializeField]
     RectTransform mainMenuPanel;
     [SerializeField]
@@ -25,9 +25,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     RectTransform diamondOriginPos;
     int score;
-
+    [SerializeField]
+    Image playerAvatar;
     public bool hasStarted;
-
+    [SerializeField]
+    TextMeshProUGUI followersText;
     private void Awake()
     {
         instance = this;
@@ -47,12 +49,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowAvatar()
+    {
+        playerAvatar.DOFillAmount(1, 0.5f);
+    }
+    public void TweenAvatarandMultiplierEffect()
+    {
+        TwitchFollowersPanel.DOAnchorPos(new Vector2(0, 0), tweeningTime).SetEase(easeType);
+    }
     public void StartGame()
     {
-        mainMenuPanel.DOScale(Vector2.zero, tweeningTime / 2).SetEase(easeType).OnComplete(() =>
-        {
-            InGamePanel.DOScale(Vector2.one, tweeningTime / 2);
-        });
+        mainMenuPanel.DOScale(Vector2.zero, tweeningTime / 2).SetEase(easeType);
     }
   
     [ContextMenu("PickUp Effect")]
@@ -72,6 +79,13 @@ public class UIManager : MonoBehaviour
         });
     }
 
+    public void ResetAvatarPos()
+    {
+        playerAvatar.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-400, -450f), 1f).OnComplete(()=>
+        {
+            DOTween.KillAll();      
+        });
+    }
     public void DecrementCashEffect(int amount)
     {
         score -= amount;
@@ -79,6 +93,17 @@ public class UIManager : MonoBehaviour
         scoreCash.DOScale(Vector2.one * 1.2f, tweeningTime / 2).SetEase(easeType).OnComplete(() =>
         {
             scoreCash.DOScale(Vector2.one, tweeningTime);
+        });
+    }
+
+    int followers = 1;
+    public void CashMultiplier()
+    {
+        followers++;
+        followersText.text = followers.ToString();
+        followersText.transform.DOScale(Vector2.one * 1.2f, tweeningTime).SetEase(easeType).OnComplete(() =>
+        {
+            followersText.transform.DOScale(Vector2.one, tweeningTime);
         });
     }
 
