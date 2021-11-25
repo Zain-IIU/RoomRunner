@@ -76,4 +76,12 @@ public class PlayerAccessories : MonoBehaviour
         }
 
     }
+
+    public void HideFollowers()
+    {
+        for (int i = 0; i < followerS.Count; i++)
+        {
+            followerS[i].transform.DOScale(Vector3.zero, 0.5f);
+        }
+    }
 }

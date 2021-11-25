@@ -45,7 +45,7 @@ public class MiniGame : MonoBehaviour
             dotInScreen.DOScale(Vector2.zero, 0.15f);
             winCamera.m_Priority = 15;
             UIManager.instance.ResetAvatarPos();
-          //  GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetTrigger("Win");
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetTrigger("Win");
         }
     }
 

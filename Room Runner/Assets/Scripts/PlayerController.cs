@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
   
     [SerializeField]
     CinemachineVirtualCamera EndCam;
+    [SerializeField]
+    CinemachineVirtualCamera winCam;
 
     private void Start()
     {
@@ -110,10 +112,13 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                
-                Debug.Log("Ghareeed Admi");
+                moveSpeed = 0;
+                animator.SetTrigger("Defeated");
+                winCam.m_Priority = 15;
+                other.gameObject.transform.DOScale(Vector2.zero, 0.15f);
+                accessories.HideFollowers();
             }
-           
+
         }
         if(other.gameObject.CompareTag("EndLine"))
         {
