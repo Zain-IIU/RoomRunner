@@ -30,6 +30,11 @@ public class UIManager : MonoBehaviour
     public bool hasStarted;
     [SerializeField]
     TextMeshProUGUI followersText;
+    [SerializeField]
+    RectTransform LosePanel;
+    [SerializeField]
+    RectTransform WinPanel;
+    
     private void Awake()
     {
         instance = this;
@@ -47,6 +52,8 @@ public class UIManager : MonoBehaviour
             hasStarted = true;
             StartGame();
         }
+
+     
     }
 
     public void ShowAvatar()
@@ -78,13 +85,18 @@ public class UIManager : MonoBehaviour
             diamondImage.gameObject.SetActive(false);
         });
     }
+    public void ShowLosePanel()
+    {
+        LosePanel.DOScale(Vector3.one, tweeningTime);
+    }
+    public void ShowWinPanel()
+    {
+        WinPanel.DOScale(Vector3.one, tweeningTime);
+    }
 
     public void ResetAvatarPos()
     {
-        playerAvatar.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-400, -450f), 1f).OnComplete(()=>
-        {
-            DOTween.KillAll();      
-        });
+        playerAvatar.GetComponent<RectTransform>().DOAnchorPosX(-400f, 0.25f);
     }
     public void DecrementCashEffect(int amount)
     {
@@ -101,9 +113,9 @@ public class UIManager : MonoBehaviour
     {
         followers++;
         followersText.text = followers.ToString();
-        followersText.transform.DOScale(Vector2.one * 1.2f, tweeningTime).SetEase(easeType).OnComplete(() =>
+        followersText.transform.DOScale(Vector2.one * 1.2f, tweeningTime/2).SetEase(easeType).OnComplete(() =>
         {
-            followersText.transform.DOScale(Vector2.one, tweeningTime);
+            followersText.transform.DOScale(Vector2.one, tweeningTime/2);
         });
     }
 

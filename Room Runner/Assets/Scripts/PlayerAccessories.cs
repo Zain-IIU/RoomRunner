@@ -40,7 +40,6 @@ public class PlayerAccessories : MonoBehaviour
     public void PickUpItemByFollowers(Transform item)
     {
         itemsPicked.Add(item.gameObject);
-        Debug.Log(itemsPicked[RandomIndex].name);
         item.transform.parent = followerS[RandomIndex].transform;
         item.DOLocalMove(new Vector3(0,1.5f,0), 0.5f);
         item.DOScale(Vector3.one* 1.5f, 0.75f);
@@ -66,7 +65,7 @@ public class PlayerAccessories : MonoBehaviour
             {
                 gamingChair.DOLocalMove(new Vector3(0, 0, -1), 2.5f).SetEase(Ease.InBack).OnComplete( ()=>
                 {
-                    endCamera.transform.DOMoveZ(148f, 1f);
+                    endCamera.transform.DOMoveZ(endCamera.transform.position.z + 1.5f, 1f);
                     MiniGame.instance.StartScreen();
                     UIManager.instance.ShowAvatar();
                     MiniGame.instance.StartMiniGameTimer();

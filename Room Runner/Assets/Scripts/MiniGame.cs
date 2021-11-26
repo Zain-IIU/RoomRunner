@@ -23,7 +23,8 @@ public class MiniGame : MonoBehaviour
 
     [SerializeField]
     CinemachineVirtualCamera winCamera;
-
+    [SerializeField]
+    float decrementTimeforProgressBar;
 
     bool hasLost;
     private void Awake()
@@ -41,31 +42,34 @@ public class MiniGame : MonoBehaviour
     {
         if (healthBar.fillAmount <= 0 && !hasLost)
         {
-            hasLost = true;
-            dotInScreen.DOScale(Vector2.zero, 0.15f);
+         
+            dotInScreen.DOScale(Vector2.zero, 0.1f);
             winCamera.m_Priority = 15;
             UIManager.instance.ResetAvatarPos();
+            UIManager.instance.ShowWinPanel();
             GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetTrigger("Win");
+            hasLost = true;
         }
     }
 
 
     public void StartMiniGameTimer()
     {
-        healthBar.DOFillAmount(0, 2f);
+        healthBar.DOFillAmount(0,decrementTimeforProgressBar);
     }
     public void PlayTheGame()
     {
         DOTween.KillAll();
         healthBar.fillAmount = 1f;
+        decrementTimeforProgressBar -= 0.2f;
         StartMiniGameTimer();
         UIManager.instance.CashMultiplier();
 
-            dotInScreen.DOScale(Vector2.zero, 0.15f).OnComplete(() =>
+            dotInScreen.DOScale(Vector2.zero, 0.1f).OnComplete(() =>
             {
-                dotInScreen.DOAnchorPos(new Vector3(Random.Range(-23f, 23f), Random.Range(-6f, 6f), 0.25f), 0.25f).OnComplete(() =>
+                dotInScreen.DOAnchorPos(new Vector3(Random.Range(-23f, 23f), Random.Range(-6f, 6f), 0.25f), 0.15f).OnComplete(() =>
                 {
-                    dotInScreen.DOScale(Vector2.one, 0.15f);
+                    dotInScreen.DOScale(Vector2.one, 0.1f);
                 });
             });
         

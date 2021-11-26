@@ -103,8 +103,6 @@ public class PlayerController : MonoBehaviour
             if(other.gameObject.GetComponent<Gate>().isActive)
             {
                 CashPickUp.instance.DecrementCash(other.gameObject.GetComponent<Gate>().getPrice());
-                other.gameObject.transform.DOScale(Vector2.zero, 0.15f);
-              
                 accessories.EnableHeadset();
                 accessories.PickUpItemByFollowers(other.transform.GetChild(0).transform);
                 counterforPickUps++;
@@ -112,12 +110,11 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                moveSpeed = 0;
-                animator.SetTrigger("Defeated");
-                winCam.m_Priority = 15;
-                other.gameObject.transform.DOScale(Vector2.zero, 0.15f);
+                LosePlayer();
                 accessories.HideFollowers();
+               
             }
+            other.gameObject.transform.DOScale(Vector2.zero, 0.15f);
 
         }
         if(other.gameObject.CompareTag("EndLine"))
@@ -129,6 +126,15 @@ public class PlayerController : MonoBehaviour
         }
 
        
+    }
+
+    public void LosePlayer()
+    {
+        moveSpeed = 0;
+        animator.SetTrigger("Defeated");
+        winCam.m_Priority = 15;
+     
+        UIManager.instance.ShowLosePanel();
     }
 
 }

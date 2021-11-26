@@ -32,7 +32,14 @@ public class CashPickUp : MonoBehaviour
         curCash = 0;
     }
 
-   
+    private void Update()
+    {
+        Vector3 v = Camera.main.transform.position - transform.position;
+        v.x = v.z = 0.0f;
+        cashText.transform.LookAt(Camera.main.transform.position - v);
+        cashText.transform.Rotate(0, 180, 0);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Cash"))
@@ -62,12 +69,20 @@ public class CashPickUp : MonoBehaviour
     {
         UIManager.instance.DecrementCashEffect(amount);
         curCash -= amount;
-        cashText.text = curCash.ToString();
-        cashText.transform.DOScale(Vector3.one * 1.25f, 0.25f).SetEase(Ease.InOutSine).OnComplete(() =>
+        if(curCash<=1)
         {
-            cashText.transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.InOutSine);
-        });
-        GatesManager.instance.ChangeGateApperance();
+            GetComponent<PlayerController>().LosePlayer();
+        }
+        else
+        {
+            cashText.text = curCash.ToString();
+            cashText.transform.DOScale(Vector3.one * 1.25f, 0.25f).SetEase(Ease.InOutSine).OnComplete(() =>
+            {
+                cashText.transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.InOutSine);
+            });
+            GatesManager.instance.ChangeGateApperance();
+        }
+       
     }
      public int getCurCash()
     {
