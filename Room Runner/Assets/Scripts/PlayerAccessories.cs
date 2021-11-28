@@ -26,6 +26,8 @@ public class PlayerAccessories : MonoBehaviour
     {
         itemsPicked = new List<GameObject>();
     }
+
+  
     public void EnableHeadset()
     {   
         HeadSet.SetActive(true);

@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     CinemachineVirtualCamera winCam;
 
+    public bool playerIsRotating;
     private void Start()
     {
         RB = GetComponent<Rigidbody>();
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //for moving straight
         if (!GameManager.instance.hasStarted) return;
         transform.Translate(Vector3.forward * (moveSpeed * Time.deltaTime));
