@@ -31,7 +31,9 @@ public class PlayerAccessories : MonoBehaviour
     public void EnableHeadset()
     {   
         HeadSet.SetActive(true);
-        followerS[index++].SetActive(true);
+        followerS[index].SetActive(true);
+        if (index < followerS.Count - 1)
+            index++;
         if(pickUP_VFX)
         pickUP_VFX.SetActive(true);
     }
@@ -52,7 +54,7 @@ public class PlayerAccessories : MonoBehaviour
     {
         for(int i=0;i<itemsPicked.Count;i++)
         {
-            followerS[i].GetComponent<Animator>().SetTrigger("Stop");
+            //followerS[i].GetComponent<Animator>().SetTrigger("Stop");
             for(int j=0;j<positionofEachObject.Length;j++)
             {
                 if( itemsPicked[i].name==positionofEachObject[j].name)

@@ -55,12 +55,12 @@ public class MiniGame : MonoBehaviour
 
     public void StartMiniGameTimer()
     {
-        healthBar.DOFillAmount(0,decrementTimeforProgressBar);
+        healthBar.DOFillAmount(0, decrementTimeforProgressBar);
+        
     }
     public void PlayTheGame()
     {
-        DOTween.KillAll();
-        healthBar.fillAmount = 1f;
+        healthBar.DOFillAmount(1, 0);
         decrementTimeforProgressBar -= 0.2f;
         StartMiniGameTimer();
         UIManager.instance.CashMultiplier();

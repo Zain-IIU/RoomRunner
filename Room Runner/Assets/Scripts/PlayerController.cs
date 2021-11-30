@@ -91,10 +91,12 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Walk_Normal");
             animator.SetTrigger("Happy");
+            PlayerParticle.instance.PlaylevelUpVFX();
         }
         else if(counter>=4 && counter <10)
         {
             animator.SetTrigger("Walk_Happy");
+            PlayerParticle.instance.PlaylevelUpVFX();
         }
     }
 
@@ -104,11 +106,16 @@ public class PlayerController : MonoBehaviour
         {
             if(other.gameObject.GetComponent<Gate>().isActive)
             {
+
                 CashPickUp.instance.DecrementCash(other.gameObject.GetComponent<Gate>().getPrice());
                 accessories.EnableHeadset();
                 accessories.PickUpItemByFollowers(other.transform.GetChild(0).transform);
                 counterforPickUps++;
                 SetAnimations(counterforPickUps);
+                PlayerParticle.instance.PlayPickUpVFX();
+                UIManager.instance.IncreaseFollowersAmount();
+                
+
             }
             else
             {
@@ -122,6 +129,7 @@ public class PlayerController : MonoBehaviour
         if(other.gameObject.CompareTag("EndLine"))
         {
             animator.SetTrigger("Idle");
+            UIManager.instance.HideFollowersMeter();    
             moveSpeed = 0f;
             EndCam.m_Priority = 12;
             accessories.RearrangeItems(EndCam);

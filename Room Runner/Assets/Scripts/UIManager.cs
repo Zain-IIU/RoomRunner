@@ -34,7 +34,11 @@ public class UIManager : MonoBehaviour
     RectTransform LosePanel;
     [SerializeField]
     RectTransform WinPanel;
-    
+    [SerializeField]
+    Image followersCount;
+
+    [SerializeField]
+    RectTransform tweeningFollowersText_InGame;
     private void Awake()
     {
         instance = this;
@@ -42,20 +46,47 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        followersCount.fillAmount = 0f;
+        followersCount.color = Color.white;
         score = 0;
         hasStarted = false;
+        tweeningFollowersText_InGame.gameObject.SetActive(false);
     }
     private void Update()
     {
         if(!hasStarted && Input.GetMouseButtonDown(0))
         {
             hasStarted = true;
+            ShowFollowersMeter();
             StartGame();
         }
 
      
     }
 
+
+    public void IncreaseFollowersAmount()
+    {
+        TweenFollowersTextinGame();
+        followersCount.DOFillAmount(followersCount.fillAmount + 0.2f, 0.25f);
+        //followersCount.fillAmount += 0.2f;
+        if(followersCount.fillAmount>=.1f && followersCount.fillAmount<0.5f)
+            followersCount.color = Color.red;
+        if (followersCount.fillAmount >= .5f && followersCount.fillAmount < 0.7f)
+            followersCount.color = Color.blue;
+        if (followersCount.fillAmount >= .7f && followersCount.fillAmount <1f)
+            followersCount.color = Color.green;
+    }
+
+    private void TweenFollowersTextinGame()
+    {
+        tweeningFollowersText_InGame.gameObject.SetActive(true);
+        tweeningFollowersText_InGame.DOAnchorPosY(100f, tweeningTime).OnComplete(() =>
+       {
+           tweeningFollowersText_InGame.gameObject.SetActive(false);
+           tweeningFollowersText_InGame.DOAnchorPos(Vector2.zero, 0);
+       });
+    }
     public void ShowAvatar()
     {
         playerAvatar.DOFillAmount(1, 0.5f);
@@ -78,7 +109,7 @@ public class UIManager : MonoBehaviour
         });
         score += amounttoIncrease;
         scoreText.text = score.ToString();
-        RectTransform diamondImage = Instantiate(scoreCash,diamondOriginPos);
+        RectTransform diamondImage = Instantiate(scoreCash, diamondOriginPos);
         diamondImage.DOMove(scoreCash.position, tweeningTime).OnComplete(() =>
         {
 
@@ -107,7 +138,14 @@ public class UIManager : MonoBehaviour
             scoreCash.DOScale(Vector2.one, tweeningTime);
         });
     }
-
+    public void ShowFollowersMeter()
+    {
+        followersCount.rectTransform.DOScaleX(1, 0.25f);
+    }
+    public void HideFollowersMeter()
+    {
+        followersCount.rectTransform.DOScaleX(0, 0.25f);
+    }
     int followers = 1;
     public void CashMultiplier()
     {

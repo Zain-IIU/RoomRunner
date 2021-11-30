@@ -36,8 +36,9 @@ public class CashPickUp : MonoBehaviour
     {
         Vector3 v = Camera.main.transform.position - transform.position;
         v.x = v.z = 0.0f;
-        cashText.transform.LookAt(Camera.main.transform.position - v);
-        cashText.transform.Rotate(0, 180, 0);
+        cashText.transform.parent.LookAt(Camera.main.transform.position - v);
+
+        cashText.transform.parent.Rotate(0, 180, 0);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,6 +59,7 @@ public class CashPickUp : MonoBehaviour
         }
         if(other.gameObject.CompareTag("Obstacle"))
         {
+            other.gameObject.transform.DOScale(0, 0.25f);
             DecrementCash(50);
             animator.SetTrigger("Walk_Sad");
             VFX.SetActive(true);
