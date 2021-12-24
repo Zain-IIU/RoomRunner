@@ -55,6 +55,7 @@ public class MiniGame : MonoBehaviour
 
     public void StartMiniGameTimer()
     {
+        
         healthBar.DOFillAmount(0, decrementTimeforProgressBar);
         
     }
